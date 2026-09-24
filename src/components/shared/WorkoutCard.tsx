@@ -2,21 +2,15 @@
 
 import Link from "next/link";
 import type { IWorkout } from "@/types/workout-type";
-import { useFitLog } from "@/context/FitLogContext";
 
 interface WorkoutCardProps {
   workout: IWorkout;
 }
 
 const WorkoutCard = ({ workout }: WorkoutCardProps) => {
-  const { plan, saved, addToPlan, saveForLater } = useFitLog();
-
-  const isPlanned = plan.some((item) => item.id === workout.id);
-  const isSaved = saved.some((item) => item.id === workout.id);
-
   return (
     <article className="group overflow-hidden rounded-xl border border-gray-800 bg-[#15171c] transition duration-300 hover:-translate-y-1 hover:border-gray-600">
-
+      
       {/* Image */}
       <Link href={`/workouts/${workout.id}`}>
         <div className="relative aspect-[16/9] w-full overflow-hidden">
@@ -58,39 +52,13 @@ const WorkoutCard = ({ workout }: WorkoutCardProps) => {
         {/* Divider */}
         <div className="my-4 h-px bg-gray-800" />
 
-        {/* Workout Stats */}
+        {/* Stats */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-gray-400">
           <span>◷ {workout.duration} min</span>
 
           <span>● {workout.caloriesBurned} kcal</span>
 
           <span>☆ {workout.rating}</span>
-        </div>
-
-        {/* Actions */}
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          <button
-            onClick={() => addToPlan(workout)}
-            disabled={isPlanned}
-            className={`rounded-lg px-3 py-2 text-xs font-semibold transition sm:text-sm ${
-              isPlanned
-                ? "cursor-not-allowed bg-gray-700 text-gray-400"
-                : "bg-lime-400 text-black hover:bg-lime-300"
-            }`}
-          >
-            {isPlanned ? "In Plan" : "Add to Plan"}
-          </button>
-
-          <button
-            onClick={() => saveForLater(workout)}
-            className={`rounded-lg border px-3 py-2 text-xs font-semibold transition sm:text-sm ${
-              isSaved
-                ? "border-lime-400 text-lime-400"
-                : "border-gray-700 text-gray-300 hover:border-lime-400 hover:text-lime-400"
-            }`}
-          >
-            {isSaved ? "Saved" : "Save"}
-          </button>
         </div>
       </div>
     </article>

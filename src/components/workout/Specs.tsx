@@ -6,48 +6,64 @@ interface SpecsProps {
 
 const Specs = ({ workout }: SpecsProps) => {
   return (
-    <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3">
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Equipment</p>
-        <p className="mt-1 font-semibold text-white">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+
+      {/* Equipment */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Equipment</p>
+        <p className="mt-1 text-sm font-semibold text-white">
           {workout.equipment}
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Difficulty</p>
-        <p className="mt-1 font-semibold text-white">
+      {/* Difficulty */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Difficulty</p>
+        <p className="mt-1 text-sm font-semibold text-white">
           {workout.difficulty}
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Sets</p>
-        <p className="mt-1 font-semibold text-white">
+      {/* Sets */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Sets</p>
+        <p className="mt-1 text-sm font-semibold text-white">
           {workout.sets}
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Reps</p>
-        <p className="mt-1 font-semibold text-white">
+      {/* Reps */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Reps</p>
+        <p className="mt-1 text-sm font-semibold text-white">
           {workout.reps}
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Duration</p>
-        <p className="mt-1 font-semibold text-white">
+      {/* Duration */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Duration</p>
+        <p className="mt-1 text-sm font-semibold text-white">
           {workout.duration} min
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <p className="text-sm text-gray-400">Calories</p>
-        <p className="mt-1 font-semibold text-white">
-          {workout.calories} kcal
+      {/* Calories */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Calories</p>
+        <p className="mt-1 text-sm font-semibold text-white">
+          {workout.caloriesBurned} kcal
         </p>
       </div>
+
+      {/* Rating */}
+      <div className="rounded-xl border border-gray-800 bg-[#181a20] p-4">
+        <p className="text-xs uppercase text-gray-500">Rating</p>
+        <p className="mt-1 text-sm font-semibold text-white">
+          ⭐ {workout.rating}
+        </p>
+      </div>
+
     </div>
   );
 };

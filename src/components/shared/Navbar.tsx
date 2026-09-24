@@ -33,8 +33,8 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="FitLog logo"
-              width={42}
-              height={42}
+              width={30}
+              height={30}
               priority
               className="rounded-full"
             />

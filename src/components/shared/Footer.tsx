@@ -1,0 +1,33 @@
+import Image from "next/image";
+import logo1 from "@/assets/logo.png";
+
+const Footer = () => {
+  return (
+    <footer className="border-t border-gray-800 bg-[#08090b]">
+      <div className="mx-auto flex min-h-[70px] max-w-7xl items-center justify-between px-6">
+
+        {/* Logo */}
+        <div className="flex h-8 w-24 items-center gap-4">
+          <Image
+            src={logo1}
+            alt="FitLog Logo"
+            width={60}
+            height={28}
+            className="h-7 w-auto object-contain"
+          />
+          <span className="text-xs font-bold tracking-wide text-white">
+            FITLOG
+          </span>
+        </div>
+
+        {/* Copyright */}
+        <p className="text-[10px] text-gray-600">
+          © 2026 FitLog — Workout Library. Train hard, log honest.
+        </p>
+
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

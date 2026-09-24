@@ -3,6 +3,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -12,17 +13,20 @@ import type { IWorkout } from "../types/workout-type";
 interface FitLogContextType {
   plan: IWorkout[];
   saved: IWorkout[];
+  completed: number[];
 
   addToPlan: (workout: IWorkout) => void;
   removeFromPlan: (id: number) => void;
 
   saveForLater: (workout: IWorkout) => void;
   removeFromSaved: (id: number) => void;
+
+  toggleCompleted: (id: number) => void;
 }
 
-const FitLogContext = createContext<FitLogContextType | undefined>(
-  undefined
-);
+const FitLogContext = createContext<
+  FitLogContextType | undefined
+>(undefined);
 
 interface FitLogProviderProps {
   children: ReactNode;
@@ -33,6 +37,61 @@ export const FitLogProvider = ({
 }: FitLogProviderProps) => {
   const [plan, setPlan] = useState<IWorkout[]>([]);
   const [saved, setSaved] = useState<IWorkout[]>([]);
+  const [completed, setCompleted] = useState<number[]>([]);
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load data from localStorage
+  useEffect(() => {
+    const storedPlan = localStorage.getItem("fitlog-plan");
+    const storedSaved = localStorage.getItem("fitlog-saved");
+    const storedCompleted =
+      localStorage.getItem("fitlog-completed");
+
+    if (storedPlan) {
+      setPlan(JSON.parse(storedPlan));
+    }
+
+    if (storedSaved) {
+      setSaved(JSON.parse(storedSaved));
+    }
+
+    if (storedCompleted) {
+      setCompleted(JSON.parse(storedCompleted));
+    }
+
+    setIsLoaded(true);
+  }, []);
+
+  // Save plan to localStorage
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    localStorage.setItem(
+      "fitlog-plan",
+      JSON.stringify(plan)
+    );
+  }, [plan, isLoaded]);
+
+  // Save saved workouts to localStorage
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    localStorage.setItem(
+      "fitlog-saved",
+      JSON.stringify(saved)
+    );
+  }, [saved, isLoaded]);
+
+  // Save completed workouts to localStorage
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    localStorage.setItem(
+      "fitlog-completed",
+      JSON.stringify(completed)
+    );
+  }, [completed, isLoaded]);
 
   // Add workout to plan
   const addToPlan = (workout: IWorkout) => {
@@ -53,6 +112,11 @@ export const FitLogProvider = ({
   const removeFromPlan = (id: number) => {
     setPlan((previousPlan) =>
       previousPlan.filter((item) => item.id !== id)
+    );
+
+    // Also remove completed status
+    setCompleted((previousCompleted) =>
+      previousCompleted.filter((item) => item !== id)
     );
   };
 
@@ -78,15 +142,33 @@ export const FitLogProvider = ({
     );
   };
 
+  // Mark workout as completed / incomplete
+  const toggleCompleted = (id: number) => {
+    setCompleted((previousCompleted) => {
+      const alreadyCompleted =
+        previousCompleted.includes(id);
+
+      if (alreadyCompleted) {
+        return previousCompleted.filter(
+          (item) => item !== id
+        );
+      }
+
+      return [...previousCompleted, id];
+    });
+  };
+
   return (
     <FitLogContext.Provider
       value={{
         plan,
         saved,
+        completed,
         addToPlan,
         removeFromPlan,
         saveForLater,
         removeFromSaved,
+        toggleCompleted,
       }}
     >
       {children}

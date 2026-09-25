@@ -19,6 +19,9 @@ interface FitLogContextType {
 
   saveForLater: (workout: IWorkout) => void;
   removeFromSaved: (id: number) => void;
+
+  markCompleted: (id: number) => void;
+  completed: number[];
 }
 
 const FitLogContext = createContext<FitLogContextType | undefined>(
@@ -34,35 +37,70 @@ export const FitLogProvider = ({
 }: FitLogProviderProps) => {
   const [plan, setPlan] = useState<IWorkout[]>([]);
   const [saved, setSaved] = useState<IWorkout[]>([]);
+  const [completed, setCompleted] = useState<number[]>([]);
+
+  // Important: wait until localStorage has been loaded
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load data from localStorage
   useEffect(() => {
-    const storedPlan = localStorage.getItem("fitlog-plan");
-    const storedSaved = localStorage.getItem("fitlog-saved");
+    try {
+      const storedPlan = localStorage.getItem("fitlog-plan");
+      const storedSaved = localStorage.getItem("fitlog-saved");
+      const storedCompleted = localStorage.getItem("fitlog-completed");
 
-    if (storedPlan) {
-      setPlan(JSON.parse(storedPlan));
-    }
+      if (storedPlan) {
+        setPlan(JSON.parse(storedPlan));
+      }
 
-    if (storedSaved) {
-      setSaved(JSON.parse(storedSaved));
+      if (storedSaved) {
+        setSaved(JSON.parse(storedSaved));
+      }
+
+      if (storedCompleted) {
+        setCompleted(JSON.parse(storedCompleted));
+      }
+    } catch (error) {
+      console.error("Failed to load FitLog data:", error);
+    } finally {
+      setIsLoaded(true);
     }
   }, []);
 
-  // Save plan to localStorage
+  // Save plan
   useEffect(() => {
-    localStorage.setItem("fitlog-plan", JSON.stringify(plan));
-  }, [plan]);
+    if (!isLoaded) return;
 
-  // Save saved workouts to localStorage
+    localStorage.setItem(
+      "fitlog-plan",
+      JSON.stringify(plan)
+    );
+  }, [plan, isLoaded]);
+
+  // Save saved workouts
   useEffect(() => {
-    localStorage.setItem("fitlog-saved", JSON.stringify(saved));
-  }, [saved]);
+    if (!isLoaded) return;
+
+    localStorage.setItem(
+      "fitlog-saved",
+      JSON.stringify(saved)
+    );
+  }, [saved, isLoaded]);
+
+  // Save completed workouts
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    localStorage.setItem(
+      "fitlog-completed",
+      JSON.stringify(completed)
+    );
+  }, [completed, isLoaded]);
 
   // Add workout to today's plan
   const addToPlan = (workout: IWorkout) => {
     setPlan((prev) => {
-      // Prevent duplicate workout
+      // Prevent duplicate
       if (prev.some((item) => item.id === workout.id)) {
         return prev;
       }
@@ -81,12 +119,16 @@ export const FitLogProvider = ({
     setPlan((prev) =>
       prev.filter((item) => item.id !== id)
     );
+
+    setCompleted((prev) =>
+      prev.filter((completedId) => completedId !== id)
+    );
   };
 
   // Save workout for later
   const saveForLater = (workout: IWorkout) => {
     setSaved((prev) => {
-      // Prevent duplicate saved workout
+      // Prevent duplicate
       if (prev.some((item) => item.id === workout.id)) {
         return prev;
       }
@@ -102,6 +144,17 @@ export const FitLogProvider = ({
     );
   };
 
+  // Mark workout as completed
+  const markCompleted = (id: number) => {
+    setCompleted((prev) => {
+      if (prev.includes(id)) {
+        return prev;
+      }
+
+      return [...prev, id];
+    });
+  };
+
   return (
     <FitLogContext.Provider
       value={{
@@ -111,6 +164,8 @@ export const FitLogProvider = ({
         removeFromPlan,
         saveForLater,
         removeFromSaved,
+        markCompleted,
+        completed,
       }}
     >
       {children}

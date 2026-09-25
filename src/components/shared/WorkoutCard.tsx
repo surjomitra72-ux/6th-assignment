@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+
 import type { IWorkout } from "@/types/workout-type";
 
 interface WorkoutCardProps {
@@ -10,21 +12,20 @@ interface WorkoutCardProps {
 const WorkoutCard = ({ workout }: WorkoutCardProps) => {
   return (
     <article className="group overflow-hidden rounded-xl border border-gray-800 bg-[#15171c] transition duration-300 hover:-translate-y-1 hover:border-gray-600">
-      
       {/* Image */}
       <Link href={`/workouts/${workout.id}`}>
         <div className="relative aspect-[16/9] w-full overflow-hidden">
-          <img
+          <Image
             src={workout.image}
             alt={workout.name}
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            fill
+            className="object-cover transition duration-500 group-hover:scale-105"
           />
         </div>
       </Link>
 
       {/* Content */}
       <div className="p-4 sm:p-5">
-
         {/* Muscle Groups */}
         <div className="mb-3 flex flex-wrap gap-2">
           {workout.muscleGroups.slice(0, 2).map((muscle) => (
@@ -55,9 +56,7 @@ const WorkoutCard = ({ workout }: WorkoutCardProps) => {
         {/* Stats */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-gray-400">
           <span>◷ {workout.duration} min</span>
-
-          <span>● {workout.caloriesBurned} kcal</span>
-
+          <span>🔥 {workout.caloriesBurned} kcal</span>
           <span>☆ {workout.rating}</span>
         </div>
       </div>

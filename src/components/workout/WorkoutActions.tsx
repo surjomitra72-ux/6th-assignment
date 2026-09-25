@@ -1,8 +1,8 @@
 "use client";
 
-import { toast } from "react-toastify";
 import { useFitLog } from "@/context/FitLogContext";
 import type { IWorkout } from "@/types/workout-type";
+import { toast } from "react-toastify";
 
 interface WorkoutActionsProps {
   workout: IWorkout;
@@ -16,12 +16,16 @@ const WorkoutActions = ({ workout }: WorkoutActionsProps) => {
     saveForLater,
   } = useFitLog();
 
-  const handleAddToPlan = () => {
-    const alreadyAdded = plan.some(
-      (item) => item.id === workout.id
-    );
+  const isInPlan = plan.some(
+    (item) => item.id === workout.id
+  );
 
-    if (alreadyAdded) {
+  const isSaved = saved.some(
+    (item) => item.id === workout.id
+  );
+
+  const handleAddToPlan = () => {
+    if (isInPlan) {
       toast.info("Already added to today's plan");
       return;
     }
@@ -33,44 +37,42 @@ const WorkoutActions = ({ workout }: WorkoutActionsProps) => {
 
     addToPlan(workout);
 
-    toast.success("Added to today's plan");
+    toast.success(
+      `${workout.name} added to today's plan`
+    );
   };
 
-  const handleSaveForLater = () => {
-    const alreadySaved = saved.some(
-      (item) => item.id === workout.id
-    );
-
-    if (alreadySaved) {
-      toast.info("Already saved for later");
+  const handleSave = () => {
+    if (isSaved) {
+      toast.info("Already saved");
       return;
     }
 
     saveForLater(workout);
 
-    toast.success("Saved for later");
+    toast.success(
+      `${workout.name} saved for later`
+    );
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      {/* Add to Plan */}
+    <div className="flex flex-wrap gap-3">
       <button
         type="button"
         onClick={handleAddToPlan}
-        className="inline-flex items-center gap-2 rounded-md bg-[#ccff00] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#b8eb00]"
+        disabled={isInPlan}
+        className="rounded-lg bg-[#ccff00] px-5 py-3 font-semibold text-black transition hover:bg-[#b8eb00] disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <span>▣</span>
-        Add to today's plan
+        {isInPlan ? "✓ Added to Plan" : "+ Add to Plan"}
       </button>
 
-      {/* Save for Later */}
       <button
         type="button"
-        onClick={handleSaveForLater}
-        className="inline-flex items-center gap-2 rounded-md border border-gray-700 px-4 py-2 text-xs font-medium text-gray-300 transition hover:border-gray-500 hover:text-white"
+        onClick={handleSave}
+        disabled={isSaved}
+        className="rounded-lg border border-gray-700 px-5 py-3 font-semibold text-white transition hover:border-[#ccff00] hover:text-[#ccff00] disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <span>♡</span>
-        Save for later
+        {isSaved ? "✓ Saved" : "♡ Save for Later"}
       </button>
     </div>
   );

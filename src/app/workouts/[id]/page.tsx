@@ -12,7 +12,9 @@ interface WorkoutDetailsPageProps {
   }>;
 }
 
-const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
+const WorkoutDetailsPage = ({
+  params,
+}: WorkoutDetailsPageProps) => {
   const [workout, setWorkout] = useState<IWorkout | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,25 +45,31 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
     getWorkout();
   }, [params]);
 
-  /* Loading */
+  /* ================= LOADING ================= */
+
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#101114] text-white">
         <div className="text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-gray-700 border-t-[#ccff00]" />
 
-          <p className="mt-4 text-gray-400">Loading workout...</p>
+          <p className="mt-4 text-gray-400">
+            Loading workout...
+          </p>
         </div>
       </main>
     );
   }
 
-  /* Not Found */
+  /* ================= NOT FOUND ================= */
+
   if (!workout) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#101114] px-4 text-white">
         <div className="text-center">
-          <h1 className="text-4xl font-bold">Workout Not Found</h1>
+          <h1 className="text-4xl font-bold">
+            Workout Not Found
+          </h1>
 
           <p className="mt-3 text-gray-400">
             The workout you are looking for does not exist.
@@ -71,12 +79,18 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
     );
   }
 
+  /* ================= MAIN PAGE ================= */
+
   return (
     <main className="min-h-screen bg-[#101114] px-4 py-10 text-white md:px-8">
       <div className="mx-auto max-w-7xl">
-        {/* Main Details Card */}
+
+        {/* ================= MAIN DETAILS CARD ================= */}
+
         <section className="grid gap-8 rounded-2xl bg-[#111318] p-4 md:p-6 lg:grid-cols-2">
-          {/* LEFT SIDE - IMAGE */}
+
+          {/* ================= LEFT SIDE - IMAGE ================= */}
+
           <div className="relative h-[400px] overflow-hidden rounded-xl sm:h-[500px] lg:h-[620px]">
             <Image
               src={workout.image}
@@ -87,51 +101,44 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
             />
           </div>
 
-          {/* RIGHT SIDE - DETAILS */}
+          {/* ================= RIGHT SIDE - DETAILS ================= */}
+
           <div className="flex flex-col">
-            {/* Title */}
+
+            {/* ================= TITLE ================= */}
+
             <h1 className="text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
               {workout.name}
             </h1>
 
-            {/* Description */}
+            {/* ================= DESCRIPTION ================= */}
+
             <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base">
               {workout.description}
             </p>
 
-            {/* Category Tags */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              {Array.isArray(workout.category) ? (
-                workout.category.map((category) => (
-                  <span
-                    key={category}
-                    className="rounded-full bg-[#ccff00] px-3 py-1 text-xs font-bold uppercase text-black"
-                  >
-                    {category}
-                  </span>
-                ))
-              ) : (
-                <span className="rounded-full bg-[#ccff00] px-3 py-1 text-xs font-bold uppercase text-black">
-                  {workout.category}
-                </span>
+            {/* ================= MUSCLE GROUPS ================= */}
+
+            {Array.isArray(workout.muscleGroups) &&
+              workout.muscleGroups.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {workout.muscleGroups.map((group, index) => (
+                    <span
+                      key={`${group}-${index}`}
+                      className="inline-flex rounded-full bg-[#ccff00] px-4 py-1.5 text-xs font-bold text-black"
+                    >
+                      {group}
+                    </span>
+                  ))}
+                </div>
               )}
-            </div>
 
-            {/* Muscle Groups */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              {workout.muscleGroups?.map((group, index) => (
-                <span
-                  key={`${group}-${index}`}
-                  className="rounded-full bg-lime-400 px-4 py-1 text-xs font-bold text-black"
-                >
-                  {group}
-                </span>
-              ))}
-            </div>
+            {/* ================= KEY SPECS ================= */}
 
-            {/* KEY SPECS */}
             <div className="mt-6 overflow-hidden rounded-xl border border-gray-800 bg-[#17191e]">
+
               {/* Equipment */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Equipment
@@ -143,6 +150,7 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
               </div>
 
               {/* Difficulty */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Difficulty
@@ -154,24 +162,31 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
               </div>
 
               {/* Sets */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Sets
                 </span>
 
-                <span className="text-sm text-gray-200">{workout.sets}</span>
+                <span className="text-sm text-gray-200">
+                  {workout.sets}
+                </span>
               </div>
 
               {/* Reps */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Reps
                 </span>
 
-                <span className="text-sm text-gray-200">{workout.reps}</span>
+                <span className="text-sm text-gray-200">
+                  {workout.reps}
+                </span>
               </div>
 
               {/* Duration */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Duration
@@ -183,55 +198,65 @@ const WorkoutDetailsPage = ({ params }: WorkoutDetailsPageProps) => {
               </div>
 
               {/* Calories */}
+
               <div className="flex items-center justify-between border-b border-gray-800 px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Calories
                 </span>
 
                 <span className="text-sm text-gray-200">
-                  {workout.calories} kcal
+                  {workout.caloriesBurned} kcal
                 </span>
               </div>
 
               {/* Rating */}
+
               <div className="flex items-center justify-between px-4 py-4">
                 <span className="text-xs uppercase tracking-wide text-gray-500">
                   Rating
                 </span>
 
                 <span className="text-sm text-gray-200">
-                  <span className="mr-1 text-[#ccff00]">★</span>
+                  <span className="mr-1 text-[#ccff00]">
+                    ★
+                  </span>
+
                   {workout.rating}
                 </span>
               </div>
             </div>
 
-            {/* INSTRUCTIONS */}
+            {/* ================= INSTRUCTIONS ================= */}
+
             <div className="mt-7">
               <h2 className="text-sm font-bold uppercase tracking-wide">
                 Instructions
               </h2>
 
               <ol className="mt-4 space-y-4">
-                {workout.instructions.map((instruction, index) => (
-                  <li
-                    key={index}
-                    className="flex gap-3 text-sm leading-6 text-gray-400"
-                  >
-                    <span className="shrink-0 text-gray-500">
-                      {index + 1}.
-                    </span>
+                {workout.instructions.map(
+                  (instruction, index) => (
+                    <li
+                      key={index}
+                      className="flex gap-3 text-sm leading-6 text-gray-400"
+                    >
+                      <span className="shrink-0 text-gray-500">
+                        {index + 1}.
+                      </span>
 
-                    <span>{instruction}</span>
-                  </li>
-                ))}
+                      <span>{instruction}</span>
+                    </li>
+                  )
+                )}
               </ol>
             </div>
 
-            {/* ACTION BUTTONS */}
+            {/* ================= ACTION BUTTONS ================= */}
+
             <div className="mt-7">
               <WorkoutActions workout={workout} />
             </div>
+
           </div>
         </section>
       </div>

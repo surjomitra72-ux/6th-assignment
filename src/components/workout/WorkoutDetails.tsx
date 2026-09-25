@@ -38,68 +38,47 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
               {workout.description}
             </p>
 
-           {/* ================= MUSCLE GROUPS ================= */}
-<div className="mt-5 flex flex-wrap gap-2">
-  {workout.muscleGroups
-    ?.filter(
-      (group) =>
-        group?.trim() &&
-        group.trim() !== "-"
-    )
-    .map((group, index) => (
-      <span
-        key={`${group}-${index}`}
-        className="rounded-full bg-lime-400 px-4 py-1 text-xs font-bold text-black"
-      >
-        {group}
-      </span>
-    ))}
-</div>
+            
+           {/* Muscle Groups */}
+{Array.isArray(workout.muscleGroups) &&
+  workout.muscleGroups.length > 0 && (
+    <div className="mt-5 flex flex-wrap gap-2">
+      {workout.muscleGroups
+        .filter((group) => typeof group === "string" && group.trim() !== "")
+        .map((group, index) => (
+          <span
+            key={`${group}-${index}`}
+            className="inline-flex rounded-full bg-[#ccff00] px-4 py-1.5 text-xs font-bold text-black"
+          >
+            {String(group)}
+          </span>
+        ))}
+    </div>
+  )}
 
             {/* ================= WORKOUT INFORMATION ================= */}
             <div className="mt-6 overflow-hidden rounded-xl border border-gray-800 bg-[#171a20]">
-              <InfoRow
-                label="EQUIPMENT"
-                value={workout.equipment}
-              />
+              <InfoRow label="EQUIPMENT" value={workout.equipment} />
 
-              <InfoRow
-                label="DIFFICULTY"
-                value={workout.difficulty}
-              />
+              <InfoRow label="DIFFICULTY" value={workout.difficulty} />
 
-              <InfoRow
-                label="SETS"
-                value={String(workout.sets)}
-              />
+              <InfoRow label="SETS" value={String(workout.sets)} />
 
-              <InfoRow
-                label="REPS"
-                value={workout.reps}
-              />
+              <InfoRow label="REPS" value={workout.reps} />
 
-              <InfoRow
-                label="DURATION"
-                value={`${workout.duration} min`}
-              />
+              <InfoRow label="DURATION" value={`${workout.duration} min`} />
 
               <InfoRow
                 label="CALORIES"
                 value={`${workout.caloriesBurned} kcal`}
               />
 
-              <InfoRow
-                label="RATING"
-                value={String(workout.rating)}
-                last
-              />
+              <InfoRow label="RATING" value={String(workout.rating)} last />
             </div>
 
             {/* ================= INSTRUCTIONS ================= */}
             <section className="mt-7">
-              <h2 className="text-lg font-bold uppercase">
-                Instructions
-              </h2>
+              <h2 className="text-lg font-bold uppercase">Instructions</h2>
 
               <ol className="mt-4 space-y-4">
                 {workout.instructions.map((instruction, index) => (
@@ -107,9 +86,7 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
                     key={index}
                     className="flex gap-3 text-sm leading-6 text-gray-400"
                   >
-                    <span className="shrink-0 text-gray-500">
-                      {index + 1}.
-                    </span>
+                    <span className="shrink-0 text-gray-500">{index + 1}.</span>
 
                     <span>{instruction}</span>
                   </li>
@@ -136,11 +113,7 @@ interface InfoRowProps {
   last?: boolean;
 }
 
-const InfoRow = ({
-  label,
-  value,
-  last = false,
-}: InfoRowProps) => {
+const InfoRow = ({ label, value, last = false }: InfoRowProps) => {
   return (
     <div
       className={`flex min-h-[54px] items-center justify-between gap-4 px-5 py-3 ${
@@ -151,9 +124,7 @@ const InfoRow = ({
         {label}
       </span>
 
-      <span className="text-right text-sm text-gray-200">
-        {value}
-      </span>
+      <span className="text-right text-sm text-gray-200">{value}</span>
     </div>
   );
 };

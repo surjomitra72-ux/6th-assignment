@@ -1,7 +1,7 @@
 "use client";
 
-import { useFitLog } from "@/context/FitLogContext";
 import { toast } from "react-toastify";
+import { useFitLog } from "@/context/FitLogContext";
 import type { IWorkout } from "@/types/workout-type";
 
 interface WorkoutActionsProps {
@@ -13,48 +13,64 @@ const WorkoutActions = ({ workout }: WorkoutActionsProps) => {
     plan,
     saved,
     addToPlan,
-    removeFromPlan,
     saveForLater,
-    removeFromSaved,
   } = useFitLog();
 
-  const isInPlan = plan.some((item) => item.id === workout.id);
-  const isSaved = saved.some((item) => item.id === workout.id);
+  const handleAddToPlan = () => {
+    const alreadyAdded = plan.some(
+      (item) => item.id === workout.id
+    );
 
-  const handlePlan = () => {
-    if (isInPlan) {
-      removeFromPlan(workout.id);
-      toast.info("Removed from today's plan");
-    } else {
-      addToPlan(workout);
-      toast.success("Added to today's plan");
+    if (alreadyAdded) {
+      toast.info("Already added to today's plan");
+      return;
     }
+
+    if (plan.length >= 5) {
+      toast.warning("You can add maximum 5 workouts");
+      return;
+    }
+
+    addToPlan(workout);
+
+    toast.success("Added to today's plan");
   };
 
-  const handleSave = () => {
-    if (isSaved) {
-      removeFromSaved(workout.id);
-      toast.info("Removed from saved");
-    } else {
-      saveForLater(workout);
-      toast.success("Saved for later");
+  const handleSaveForLater = () => {
+    const alreadySaved = saved.some(
+      (item) => item.id === workout.id
+    );
+
+    if (alreadySaved) {
+      toast.info("Already saved for later");
+      return;
     }
+
+    saveForLater(workout);
+
+    toast.success("Saved for later");
   };
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-center gap-3">
+      {/* Add to Plan */}
       <button
-        onClick={handlePlan}
-        className="rounded-lg bg-[#ccff00] px-5 py-3 font-semibold text-black"
+        type="button"
+        onClick={handleAddToPlan}
+        className="inline-flex items-center gap-2 rounded-md bg-[#ccff00] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#b8eb00]"
       >
-        {isInPlan ? "✓ In today's plan" : "+ Add to today's plan"}
+        <span>▣</span>
+        Add to today's plan
       </button>
 
+      {/* Save for Later */}
       <button
-        onClick={handleSave}
-        className="rounded-lg border border-gray-700 px-5 py-3"
+        type="button"
+        onClick={handleSaveForLater}
+        className="inline-flex items-center gap-2 rounded-md border border-gray-700 px-4 py-2 text-xs font-medium text-gray-300 transition hover:border-gray-500 hover:text-white"
       >
-        {isSaved ? "♥ Saved" : "♡ Save for later"}
+        <span>♡</span>
+        Save for later
       </button>
     </div>
   );

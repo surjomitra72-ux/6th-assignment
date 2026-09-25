@@ -15,37 +15,49 @@ const MyPlanPage = () => {
     removeFromSaved,
   } = useFitLog();
 
-  const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
+  const [activeTab, setActiveTab] =
+    useState<"plan" | "saved">("plan");
 
-  const workouts = activeTab === "plan" ? plan : saved;
+  const workouts =
+    activeTab === "plan" ? plan : saved;
 
-  // Calculate total minutes
-  const totalMinutes = plan.reduce(
-    (total, workout) => total + workout.duration,
-    0
-  );
+  // Total minutes
+  const totalMinutes = plan.reduce((total, workout) => {
+    const duration = Number(workout.duration);
 
-  // Calculate total calories
-  const totalCalories = plan.reduce(
-    (total, workout) => total + workout.calories,
-    0
-  );
+    return total + (Number.isFinite(duration) ? duration : 0);
+  }, 0);
 
-  // Remove workout from today's plan
-  const handleRemoveFromPlan = (id: number, name: string) => {
+  // Total calories
+  const totalCalories = plan.reduce((total, workout) => {
+    const calories = Number(workout.calories);
+
+    return total + (Number.isFinite(calories) ? calories : 0);
+  }, 0);
+
+  // Remove from today's plan
+  const handleRemoveFromPlan = (
+    id: number,
+    name: string
+  ) => {
     removeFromPlan(id);
 
-    toast.success(`${name} removed from today's plan`);
+    toast.success(
+      `${name} removed from today's plan`
+    );
   };
 
-  // Remove workout from saved
-  const handleRemoveFromSaved = (id: number, name: string) => {
+  // Remove from saved
+  const handleRemoveFromSaved = (
+    id: number,
+    name: string
+  ) => {
     removeFromSaved(id);
 
     toast.info(`${name} removed from saved`);
   };
 
-  // Mark workout as done
+  // Mark as done
   const handleMarkAsDone = (name: string) => {
     toast.success(`${name} marked as done!`);
   };
@@ -138,7 +150,6 @@ const MyPlanPage = () => {
           {workouts.length === 0 ? (
             /* Empty State */
             <div className="rounded-xl border border-gray-800 bg-[#17191e] px-5 py-16 text-center">
-
               <h2 className="text-2xl font-bold">
                 NOTHING HERE YET
               </h2>
@@ -174,7 +185,6 @@ const MyPlanPage = () => {
 
                 {/* Info */}
                 <div className="min-w-0 flex-1">
-
                   <h3 className="text-xl font-bold">
                     {workout.name}
                   </h3>
@@ -210,6 +220,7 @@ const MyPlanPage = () => {
                     View Details
                   </Link>
 
+                  {/* Today's Plan Actions */}
                   {activeTab === "plan" ? (
                     <>
                       {/* Mark as Done */}
@@ -238,7 +249,7 @@ const MyPlanPage = () => {
                       </button>
                     </>
                   ) : (
-                    /* Remove Saved */
+                    /* Saved Actions */
                     <button
                       type="button"
                       onClick={() =>

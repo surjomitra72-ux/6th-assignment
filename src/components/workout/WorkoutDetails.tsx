@@ -12,14 +12,13 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
   return (
     <main className="min-h-screen bg-[#0b0d0f] px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-
+        {/* ================= MAIN CONTENT ================= */}
         <div className="grid grid-cols-1 overflow-hidden rounded-2xl bg-[#0d0f12] lg:grid-cols-2">
-
-          {/* Image */}
-          <div className="relative min-h-[400px] w-full bg-gray-200 lg:min-h-[700px]">
+          {/* ================= IMAGE ================= */}
+          <div className="relative min-h-[400px] w-full bg-gray-200 sm:min-h-[500px] lg:min-h-[700px]">
             <Image
               src={workout.image}
-              alt={workout.title}
+              alt={workout.name}
               fill
               priority
               className="object-cover"
@@ -27,34 +26,38 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
             />
           </div>
 
-          {/* Details */}
+          {/* ================= DETAILS ================= */}
           <div className="min-w-0 p-6 sm:p-8 lg:p-10">
-
             {/* Title */}
             <h1 className="text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-              {workout.title}
+              {workout.name}
             </h1>
 
             {/* Description */}
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base">
               {workout.description}
             </p>
 
-            {/* Tags */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              {workout.tags?.map((tag, index) => (
-                <span
-                  key={`${tag}-${index}`}
-                  className="rounded-full bg-lime-400 px-4 py-1 text-xs font-bold text-black"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+           {/* ================= MUSCLE GROUPS ================= */}
+<div className="mt-5 flex flex-wrap gap-2">
+  {workout.muscleGroups
+    ?.filter(
+      (group) =>
+        group?.trim() &&
+        group.trim() !== "-"
+    )
+    .map((group, index) => (
+      <span
+        key={`${group}-${index}`}
+        className="rounded-full bg-lime-400 px-4 py-1 text-xs font-bold text-black"
+      >
+        {group}
+      </span>
+    ))}
+</div>
 
-            {/* Workout Information */}
+            {/* ================= WORKOUT INFORMATION ================= */}
             <div className="mt-6 overflow-hidden rounded-xl border border-gray-800 bg-[#171a20]">
-
               <InfoRow
                 label="EQUIPMENT"
                 value={workout.equipment}
@@ -82,7 +85,7 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
 
               <InfoRow
                 label="CALORIES"
-                value={`${workout.calories} kcal`}
+                value={`${workout.caloriesBurned} kcal`}
               />
 
               <InfoRow
@@ -90,17 +93,16 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
                 value={String(workout.rating)}
                 last
               />
-
             </div>
 
-            {/* Instructions */}
+            {/* ================= INSTRUCTIONS ================= */}
             <section className="mt-7">
               <h2 className="text-lg font-bold uppercase">
                 Instructions
               </h2>
 
               <ol className="mt-4 space-y-4">
-                {workout.instructions?.map((instruction, index) => (
+                {workout.instructions.map((instruction, index) => (
                   <li
                     key={index}
                     className="flex gap-3 text-sm leading-6 text-gray-400"
@@ -115,11 +117,10 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
               </ol>
             </section>
 
-            {/* Actions */}
+            {/* ================= ACTION BUTTONS ================= */}
             <div className="mt-8">
               <WorkoutActions workout={workout} />
             </div>
-
           </div>
         </div>
       </div>
@@ -127,8 +128,7 @@ const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
   );
 };
 
-
-/* Info Row */
+/* ================= INFO ROW ================= */
 
 interface InfoRowProps {
   label: string;

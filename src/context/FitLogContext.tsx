@@ -5,53 +5,40 @@ import {
   useContext,
   useEffect,
   useState,
+  type ReactNode,
 } from "react";
 
-import { IWorkout } from "@/types/workout-type";
+import type { IWorkout } from "@/types/workout-type";
 
 interface FitLogContextType {
   plan: IWorkout[];
   saved: IWorkout[];
-  completed: number[];
 
   addToPlan: (workout: IWorkout) => void;
   removeFromPlan: (id: number) => void;
 
   saveForLater: (workout: IWorkout) => void;
   removeFromSaved: (id: number) => void;
-
-  toggleCompleted: (id: number) => void;
 }
 
-const FitLogContext =
-  createContext<FitLogContextType | undefined>(
-    undefined
-  );
+const FitLogContext = createContext<FitLogContextType | undefined>(
+  undefined
+);
+
+interface FitLogProviderProps {
+  children: ReactNode;
+}
 
 export const FitLogProvider = ({
   children,
-}: {
-  children: React.ReactNode;
-}) => {
+}: FitLogProviderProps) => {
   const [plan, setPlan] = useState<IWorkout[]>([]);
   const [saved, setSaved] = useState<IWorkout[]>([]);
-  const [completed, setCompleted] = useState<number[]>([]);
 
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // =========================
-  // Load From Local Storage
-  // =========================
-
+  // Load data from localStorage
   useEffect(() => {
-    const storedPlan =
-      localStorage.getItem("fitlog-plan");
-
-    const storedSaved =
-      localStorage.getItem("fitlog-saved");
-
-    const storedCompleted =
-      localStorage.getItem("fitlog-completed");
+    const storedPlan = localStorage.getItem("fitlog-plan");
+    const storedSaved = localStorage.getItem("fitlog-saved");
 
     if (storedPlan) {
       setPlan(JSON.parse(storedPlan));
@@ -60,127 +47,59 @@ export const FitLogProvider = ({
     if (storedSaved) {
       setSaved(JSON.parse(storedSaved));
     }
-
-    if (storedCompleted) {
-      setCompleted(JSON.parse(storedCompleted));
-    }
-
-    setIsLoaded(true);
   }, []);
 
-  // =========================
-  // Save Plan
-  // =========================
-
+  // Save plan to localStorage
   useEffect(() => {
-    if (!isLoaded) return;
+    localStorage.setItem("fitlog-plan", JSON.stringify(plan));
+  }, [plan]);
 
-    localStorage.setItem(
-      "fitlog-plan",
-      JSON.stringify(plan)
-    );
-  }, [plan, isLoaded]);
-
-  // =========================
-  // Save Saved
-  // =========================
-
+  // Save saved workouts to localStorage
   useEffect(() => {
-    if (!isLoaded) return;
+    localStorage.setItem("fitlog-saved", JSON.stringify(saved));
+  }, [saved]);
 
-    localStorage.setItem(
-      "fitlog-saved",
-      JSON.stringify(saved)
-    );
-  }, [saved, isLoaded]);
-
-  // =========================
-  // Save Completed
-  // =========================
-
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    localStorage.setItem(
-      "fitlog-completed",
-      JSON.stringify(completed)
-    );
-  }, [completed, isLoaded]);
-
-  // =========================
-  // ADD TO PLAN
-  // =========================
-
+  // Add workout to today's plan
   const addToPlan = (workout: IWorkout) => {
-    setPlan((currentPlan) => {
-      const alreadyExists = currentPlan.some(
-        (item) => item.id === workout.id
-      );
-
-      if (alreadyExists) {
-        return currentPlan;
+    setPlan((prev) => {
+      // Prevent duplicate workout
+      if (prev.some((item) => item.id === workout.id)) {
+        return prev;
       }
 
-      return [...currentPlan, workout];
+      // Maximum 5 workouts
+      if (prev.length >= 5) {
+        return prev;
+      }
+
+      return [...prev, workout];
     });
   };
 
-  // =========================
-  // REMOVE FROM PLAN
-  // =========================
-
+  // Remove workout from today's plan
   const removeFromPlan = (id: number) => {
-    setPlan((currentPlan) =>
-      currentPlan.filter(
-        (workout) => workout.id !== id
-      )
+    setPlan((prev) =>
+      prev.filter((item) => item.id !== id)
     );
   };
 
-  // =========================
-  // SAVE FOR LATER
-  // =========================
-
+  // Save workout for later
   const saveForLater = (workout: IWorkout) => {
-    setSaved((currentSaved) => {
-      const alreadyExists = currentSaved.some(
-        (item) => item.id === workout.id
-      );
-
-      if (alreadyExists) {
-        return currentSaved;
+    setSaved((prev) => {
+      // Prevent duplicate saved workout
+      if (prev.some((item) => item.id === workout.id)) {
+        return prev;
       }
 
-      return [...currentSaved, workout];
+      return [...prev, workout];
     });
   };
 
-  // =========================
-  // REMOVE FROM SAVED
-  // =========================
-
+  // Remove workout from saved
   const removeFromSaved = (id: number) => {
-    setSaved((currentSaved) =>
-      currentSaved.filter(
-        (workout) => workout.id !== id
-      )
+    setSaved((prev) =>
+      prev.filter((item) => item.id !== id)
     );
-  };
-
-  // =========================
-  // TOGGLE COMPLETE
-  // =========================
-
-  const toggleCompleted = (id: number) => {
-    setCompleted((currentCompleted) => {
-      if (currentCompleted.includes(id)) {
-        return currentCompleted.filter(
-          (completedId) => completedId !== id
-        );
-      }
-
-      return [...currentCompleted, id];
-    });
   };
 
   return (
@@ -188,25 +107,16 @@ export const FitLogProvider = ({
       value={{
         plan,
         saved,
-        completed,
-
         addToPlan,
         removeFromPlan,
-
         saveForLater,
         removeFromSaved,
-
-        toggleCompleted,
       }}
     >
       {children}
     </FitLogContext.Provider>
   );
 };
-
-// =========================
-// CUSTOM HOOK
-// =========================
 
 export const useFitLog = () => {
   const context = useContext(FitLogContext);

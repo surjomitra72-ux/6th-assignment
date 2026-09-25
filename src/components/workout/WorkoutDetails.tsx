@@ -1,112 +1,155 @@
-"use client";
-
+import { getWorkouts } from "@/lib/api";
 import Image from "next/image";
+import WorkoutActions from "@/components/workout/WorkoutActions";
 
-import type { IWorkout } from "@/types/workout-type";
-
-import Specs from "./Specs";
-import WorkoutActions from "./WorkoutActions";
-
-interface WorkoutDetailsProps {
-  workout: IWorkout;
+interface WorkoutDetailsPageProps {
+  params: Promise<{
+    id: string;
+  }>;
 }
 
+const WorkoutDetailsPage = async ({
+  params,
+}: WorkoutDetailsPageProps) => {
+  const { id } = await params;
 
-const WorkoutDetails = ({ workout }: WorkoutDetailsProps) => {
+  const workouts = await getWorkouts();
+
+  const workout = workouts.find(
+    (item) => item.id === Number(id)
+  );
+
+  if (!workout) {
+    return (
+      <main className="container mx-auto px-4 py-20">
+        <h1 className="text-3xl font-bold">
+          Workout not found
+        </h1>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-[#0d0f12] text-white">
-      <section className="container mx-auto px-4 py-10 md:py-16">
-        {/* ================= TOP SECTION ================= */}
-        <div className="grid gap-8 lg:grid-cols-2">
-          
-          {/* ================= IMAGE ================= */}
-          <div className="overflow-hidden rounded-2xl border border-gray-800 bg-[#15171c]">
-            <Image
-              src={workout.image}
-              alt={workout.name}
-              width={900}
-              height={700}
-              className="h-full min-h-[400px] w-full object-cover"
-              priority
-            />
-          </div>
+    <main className="container mx-auto px-4 py-12">
+      <div className="min-h-screen bg-[#0b0d10] px-4 py-10">
+        <div className="mx-auto max-w-6xl rounded-2xl bg-[#111318] p-5 text-white shadow-2xl md:p-7">
+          <div className="grid gap-8 md:grid-cols-2">
 
-          {/* ================= DETAILS ================= */}
-          <div className="flex flex-col justify-center">
-            
-            {/* Small Label */}
-            <p className="mb-3 text-xs font-bold uppercase tracking-widest text-lime-400">
-              Workout Details
-            </p>
-
-            {/* Workout Name */}
-            <h1 className="mb-5 text-4xl font-black uppercase leading-tight md:text-5xl">
-              {workout.name}
-            </h1>
-
-            {/* Muscle Groups */}
-            <div className="mb-5 flex flex-wrap gap-2">
-              {workout.muscleGroups.map((muscle) => (
-                <span
-                  key={muscle}
-                  className="rounded-full bg-lime-400 px-3 py-1 text-xs font-bold uppercase text-black"
-                >
-                  {muscle}
-                </span>
-              ))}
+            {/* Image */}
+            <div className="relative h-[350px] overflow-hidden rounded-xl md:h-[500px]">
+              <Image
+                src={workout.image}
+                alt={workout.name}
+                fill
+                className="object-cover"
+              />
             </div>
 
-            {/* Description */}
-            <p className="mb-7 max-w-2xl text-sm leading-7 text-gray-400 md:text-base">
-              {workout.description}
-            </p>
+            {/* Details */}
+            <div className="flex flex-col">
 
-            {/* Specs */}
-            <Specs workout={workout} />
-          </div>
-        </div>
+              {/* Title */}
+              <h1 className="text-3xl font-black uppercase tracking-tight md:text-4xl">
+                {workout.name}
+              </h1>
 
-        {/* ================= INSTRUCTIONS ================= */}
-        <section className="mt-12 rounded-2xl border border-gray-800 bg-[#15171c] p-6 md:p-8">
-          
-          <div className="mb-6">
-            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-lime-400">
-              How to perform
-            </p>
+              {/* Description */}
+              <p className="mt-3 text-sm leading-6 text-gray-400">
+                {workout.description}
+              </p>
 
-            <h2 className="text-2xl font-black uppercase md:text-3xl">
-              Instructions
-            </h2>
-          </div>
-
-          {/* Instructions List */}
-          <ol className="space-y-4">
-            {workout.instructions.map((instruction, index) => (
-              <li
-                key={index}
-                className="flex gap-4 rounded-xl border border-gray-800 bg-[#101216] p-4"
-              >
-                {/* Number */}
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lime-400 text-sm font-black text-black">
-                  {index + 1}
+              {/* Tags */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full bg-lime-400 px-3 py-1 text-xs font-bold text-black">
+                  {workout.muscle}
                 </span>
 
-                {/* Instruction */}
-                <p className="text-sm leading-7 text-gray-400 md:text-base">
-                  {instruction}
-                </p>
-              </li>
-            ))}
-          </ol>
+                <span className="rounded-full bg-lime-400 px-3 py-1 text-xs font-bold text-black">
+                  {workout.equipment}
+                </span>
+              </div>
 
-          {/* ================= ACTION BUTTONS ================= */}
-          <div className="mt-7">
-           <WorkoutActions workout={workout.id} />
+              {/* Specs */}
+              <div className="mt-5 overflow-hidden rounded-xl border border-gray-800 bg-[#171a20]">
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    EQUIPMENT
+                  </span>
+                  <span>{workout.equipment}</span>
+                </div>
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    DIFFICULTY
+                  </span>
+                  <span>{workout.difficulty}</span>
+                </div>
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    SETS
+                  </span>
+                  <span>{workout.sets}</span>
+                </div>
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    REPS
+                  </span>
+                  <span>{workout.reps}</span>
+                </div>
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    DURATION
+                  </span>
+                  <span>{workout.duration} min</span>
+                </div>
+
+                <div className="flex justify-between border-b border-gray-800 px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    CALORIES
+                  </span>
+                  <span>{workout.calories} kcal</span>
+                </div>
+
+                <div className="flex justify-between px-4 py-3 text-sm">
+                  <span className="text-gray-500">
+                    RATING
+                  </span>
+                  <span>⭐ {workout.rating}</span>
+                </div>
+              </div>
+
+              {/* Instructions */}
+              <div className="mt-5">
+                <h2 className="text-sm font-bold uppercase">
+                  Instructions
+                </h2>
+
+                <ol className="mt-2 list-decimal space-y-2 pl-5 text-xs leading-5 text-gray-400">
+                  {workout.instructions?.map(
+                    (instruction: string, index: number) => (
+                      <li key={index}>
+                        {instruction}
+                      </li>
+                    )
+                  )}
+                </ol>
+              </div>
+
+              {/* Buttons */}
+              <div className="mt-6">
+                <WorkoutActions workout={workout} />
+              </div>
+
+            </div>
           </div>
-        </section>
-      </section>
+        </div>
+      </div>
     </main>
   );
 };
 
-export default WorkoutDetails;
+export default WorkoutDetailsPage;

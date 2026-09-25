@@ -1,5 +1,6 @@
 import { getWorkouts } from "@/lib/api";
 import Image from "next/image";
+import WorkoutActions from "@/components/workout/WorkoutActions";
 
 interface WorkoutDetailsPageProps {
   params: Promise<{
@@ -106,6 +107,9 @@ const WorkoutDetailsPage = async ({
             <span className="text-gray-500">RATING</span>
             <span>⭐ {workout.rating}</span>
           </div>
+          <div className="mt-8">
+  <WorkoutActions workout={workout} />
+</div>F
 
         </div>
 

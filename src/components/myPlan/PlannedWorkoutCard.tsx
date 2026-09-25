@@ -22,12 +22,12 @@ const PlannedWorkoutCard = ({
 }: PlannedWorkoutCardProps) => {
   return (
     <div
-      className={`flex min-h-[76px] items-center gap-3 rounded-xl border border-gray-800 bg-[#15181e] px-3 py-2.5 transition ${
+      className={`flex flex-col gap-3 rounded-xl border border-gray-800 bg-[#15181e] p-3 transition sm:min-h-[76px] sm:flex-row sm:items-center ${
         isCompleted ? "opacity-60" : ""
       }`}
     >
       {/* Image */}
-      <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-lg">
+      <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-lg sm:h-14 sm:w-24">
         <Image
           src={workout.image}
           alt={workout.name}
@@ -46,14 +46,10 @@ const PlannedWorkoutCard = ({
           {workout.equipment}
         </p>
 
-        <div className="mt-1 flex items-center gap-3 text-[10px] text-gray-400">
-          <span>
-            ◉ {workout.duration} min
-          </span>
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-gray-400">
+          <span>◉ {workout.duration} min</span>
 
-          <span>
-            🔥 {workout.caloriesBurned} kcal
-          </span>
+          <span>🔥 {workout.caloriesBurned} kcal</span>
 
           <span>
             <span className="text-[#ccff00]">★</span>{" "}
@@ -85,7 +81,7 @@ const PlannedWorkoutCard = ({
         <button
           type="button"
           onClick={() => onRemove(workout.id)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-700 text-gray-400 transition hover:border-red-500 hover:text-red-500"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-700 text-gray-400 transition hover:border-red-500 hover:text-red-500"
           aria-label={`Remove ${workout.name}`}
         >
           ×

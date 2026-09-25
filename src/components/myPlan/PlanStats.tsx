@@ -27,7 +27,7 @@ const PlanStats = ({ workouts = [] }: PlanStatsProps) => {
           Exercises
         </p>
 
-        <h2 className="mt-2 text-3xl font-bold">
+        <h2 className="mt-2 text-3xl font-bold text-lime-400">
           {workouts.length}
         </h2>
       </div>

@@ -16,8 +16,7 @@ const Navbar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const workoutActive =
-    pathname === "/" || pathname.startsWith("/workouts");
+  const workoutActive = pathname === "/" || pathname.startsWith("/workouts");
 
   const myPlanActive =
     pathname === "/my-plan" || pathname.startsWith("/my-plan/");
@@ -27,7 +26,6 @@ const Navbar = () => {
       <div className="mx-auto max-w-7xl px-4">
         {/* Navbar */}
         <div className="flex h-20 items-center justify-between">
-
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <Image
@@ -46,14 +44,13 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-3 md:flex">
-
             {/* Workout */}
             <Link
               href="/"
               className={`rounded-full px-6 py-2.5 font-semibold transition-all duration-200 ${
                 workoutActive
-                  ? "bg-lime-400 text-black"
-                  : "text-gray-400 hover:bg-gray-900 hover:text-white"
+                  ? "bg-gray-900 text-lime-400"
+                  : "text-white hover:bg-gray-900 hover:text-white"
               }`}
             >
               Workout
@@ -64,8 +61,8 @@ const Navbar = () => {
               href="/my-plan"
               className={`rounded-full px-6 py-2.5 font-semibold transition-all duration-200 ${
                 myPlanActive
-                  ? "bg-lime-400 text-black"
-                  : "text-gray-400 hover:bg-gray-900 hover:text-white"
+                  ? "bg-gray-900 text-lime-400"
+                  : "text-white hover:bg-gray-900 hover:text-white"
               }`}
             >
               My Plan
@@ -74,21 +71,28 @@ const Navbar = () => {
 
           {/* Desktop Counters */}
           <div className="hidden items-center gap-2 lg:flex">
-
             {/* Plan Counter */}
             <Link
               href="/my-plan"
-              className="rounded-full bg-lime-400 px-5 py-2.5 text-sm font-bold text-black"
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-gray-300 transition hover:text-white"
             >
-              Plan {plan.length}
+              <span>Plan</span>
+
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-lime-400 text-xs font-bold text-black">
+                {plan.length}
+              </span>
             </Link>
 
             {/* Saved Counter */}
             <Link
               href="/my-plan"
-              className="rounded-full border border-gray-700 px-5 py-2.5 text-sm font-bold text-gray-200 transition hover:border-lime-400 hover:text-lime-400"
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-gray-400 transition hover:text-white"
             >
-              Saved {saved.length}
+              <span>Saved</span>
+
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-700 text-[10px] text-gray-300">
+                {saved.length}
+              </span>
             </Link>
           </div>
 
@@ -107,7 +111,6 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="border-t border-gray-800 py-5 md:hidden">
             <div className="flex flex-col gap-3">
-
               {/* Workout */}
               <Link
                 href="/"
@@ -136,7 +139,6 @@ const Navbar = () => {
 
               {/* Mobile Counters */}
               <div className="mt-2 grid grid-cols-2 gap-3">
-
                 {/* Plan */}
                 <Link
                   href="/my-plan"
@@ -154,7 +156,6 @@ const Navbar = () => {
                 >
                   Saved {saved.length}
                 </Link>
-
               </div>
             </div>
           </div>

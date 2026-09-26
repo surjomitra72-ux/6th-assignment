@@ -6,13 +6,13 @@
 
 Add your deployed live link here:
 
-`https://your-fitlog-live-link.vercel.app`
+`https://6th-assignment-mu.vercel.app/`
 
 ## 📌 GitHub Repository
 
 Add your GitHub repository link here:
 
-`https://github.com/your-username/fitlog`
+`https://github.com/surjomitra72-ux/6th-assignment`
 
 ---
 
@@ -182,7 +182,7 @@ src/
 ### 1. Clone the repository
 
 ```bash
-git https://github.com/surjomitra72-ux/6th-assignment
+https://github.com/surjomitra72-ux/6th-assignment
 ```
 
 ### 2. Go to the project directory

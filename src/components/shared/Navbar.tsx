@@ -24,9 +24,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 border-b border-gray-800 bg-black text-white shadow-lg">
       <div className="mx-auto max-w-7xl px-4">
-        {/* Navbar */}
         <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <Image
               src={logo}
@@ -42,9 +40,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden items-center gap-3 md:flex">
-            {/* Workout */}
             <Link
               href="/"
               className={`rounded-full px-6 py-2.5 font-semibold transition-all duration-200 ${
@@ -56,7 +52,6 @@ const Navbar = () => {
               Workout
             </Link>
 
-            {/* My Plan */}
             <Link
               href="/my-plan"
               className={`rounded-full px-6 py-2.5 font-semibold transition-all duration-200 ${
@@ -69,9 +64,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Counters */}
           <div className="hidden items-center gap-2 lg:flex">
-            {/* Plan Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-gray-300 transition hover:text-white"
@@ -83,7 +76,6 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Saved Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-gray-400 transition hover:text-white"
@@ -96,7 +88,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Button */}
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -107,11 +98,9 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="border-t border-gray-800 py-5 md:hidden">
             <div className="flex flex-col gap-3">
-              {/* Workout */}
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
@@ -124,7 +113,6 @@ const Navbar = () => {
                 Workout
               </Link>
 
-              {/* My Plan */}
               <Link
                 href="/my-plan"
                 onClick={() => setIsMenuOpen(false)}
@@ -137,9 +125,7 @@ const Navbar = () => {
                 My Plan
               </Link>
 
-              {/* Mobile Counters */}
               <div className="mt-2 grid grid-cols-2 gap-3">
-                {/* Plan */}
                 <Link
                   href="/my-plan"
                   onClick={() => setIsMenuOpen(false)}
@@ -148,7 +134,6 @@ const Navbar = () => {
                   Plan {plan.length}
                 </Link>
 
-                {/* Saved */}
                 <Link
                   href="/my-plan"
                   onClick={() => setIsMenuOpen(false)}

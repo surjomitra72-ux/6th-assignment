@@ -26,7 +26,6 @@ const PlannedWorkoutCard = ({
         isCompleted ? "opacity-60" : ""
       }`}
     >
-      {/* Image */}
       <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-lg sm:h-14 sm:w-24">
         <Image
           src={workout.image}
@@ -36,7 +35,6 @@ const PlannedWorkoutCard = ({
         />
       </div>
 
-      {/* Workout Information */}
       <div className="min-w-0 flex-1">
         <h3 className="truncate text-sm font-bold uppercase text-white">
           {workout.name}
@@ -52,13 +50,11 @@ const PlannedWorkoutCard = ({
           <span>🔥 {workout.caloriesBurned} kcal</span>
 
           <span>
-            <span className="text-[#ccff00]">★</span>{" "}
-            {workout.rating}
+            <span className="text-[#ccff00]">★</span> {workout.rating}
           </span>
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex shrink-0 items-center gap-2">
         <Link
           href={`/workouts/${workout.id}`}

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { IWorkout } from "@/types/workout-type";
 
@@ -23,71 +18,49 @@ interface FitLogContextType {
   markCompleted: (id: number) => void;
 }
 
+const FitLogContext = createContext<FitLogContextType | undefined>(undefined);
 
-
-const FitLogContext = createContext<FitLogContextType | undefined>(
-  undefined
-);
-
-export const FitLogProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const FitLogProvider = ({ children }: { children: React.ReactNode }) => {
   const [plan, setPlan] = useState<IWorkout[]>([]);
   const [saved, setSaved] = useState<IWorkout[]>([]);
   const [completed, setCompleted] = useState<number[]>([]);
 
-  // Load data from localStorage
   useEffect(() => {
-    try {
-      const storedPlan = localStorage.getItem("fitlog-plan");
-      const storedSaved = localStorage.getItem("fitlog-saved");
-      const storedCompleted = localStorage.getItem("fitlog-completed");
+    const storedPlan = localStorage.getItem("fitlog-plan");
+    const storedSaved = localStorage.getItem("fitlog-saved");
+    const storedCompleted = localStorage.getItem("fitlog-completed");
 
-      if (storedPlan) {
-        setPlan(JSON.parse(storedPlan));
-      }
+    if (storedPlan) {
+      setPlan(JSON.parse(storedPlan));
+    }
 
-      if (storedSaved) {
-        setSaved(JSON.parse(storedSaved));
-      }
+    if (storedSaved) {
+      setSaved(JSON.parse(storedSaved));
+    }
 
-      if (storedCompleted) {
-        setCompleted(JSON.parse(storedCompleted));
-      }
-    } catch (error) {
-      console.error("Failed to load FitLog data:", error);
+    if (storedCompleted) {
+      setCompleted(JSON.parse(storedCompleted));
     }
   }, []);
 
-  // Save plan
   useEffect(() => {
     localStorage.setItem("fitlog-plan", JSON.stringify(plan));
   }, [plan]);
 
-  // Save saved workouts
   useEffect(() => {
     localStorage.setItem("fitlog-saved", JSON.stringify(saved));
   }, [saved]);
 
-  // Save completed workouts
   useEffect(() => {
-    localStorage.setItem(
-      "fitlog-completed",
-      JSON.stringify(completed)
-    );
+    localStorage.setItem("fitlog-completed", JSON.stringify(completed));
   }, [completed]);
 
-  // Add workout to Today's Plan
   const addToPlan = (workout: IWorkout) => {
     setPlan((currentPlan) => {
-      // Prevent duplicate workout
       if (currentPlan.some((item) => item.id === workout.id)) {
         return currentPlan;
       }
 
-      // Maximum 5 workouts
       if (currentPlan.length >= 5) {
         return currentPlan;
       }
@@ -96,19 +69,14 @@ export const FitLogProvider = ({
     });
   };
 
-  // Remove workout from Today's Plan
   const removeFromPlan = (id: number) => {
-    setPlan((currentPlan) =>
-      currentPlan.filter((workout) => workout.id !== id)
-    );
+    setPlan((currentPlan) => currentPlan.filter((item) => item.id !== id));
 
-    // Also remove completed status
     setCompleted((currentCompleted) =>
-      currentCompleted.filter((workoutId) => workoutId !== id)
+      currentCompleted.filter((itemId) => itemId !== id),
     );
   };
 
-  // Save workout for later
   const saveForLater = (workout: IWorkout) => {
     setSaved((currentSaved) => {
       // Prevent duplicate saved workout
@@ -120,17 +88,12 @@ export const FitLogProvider = ({
     });
   };
 
-  // Remove workout from Saved
   const removeFromSaved = (id: number) => {
-    setSaved((currentSaved) =>
-      currentSaved.filter((workout) => workout.id !== id)
-    );
+    setSaved((currentSaved) => currentSaved.filter((item) => item.id !== id));
   };
 
-  // Mark workout as completed
   const markCompleted = (id: number) => {
     setCompleted((currentCompleted) => {
-      // Prevent duplicate completed ID
       if (currentCompleted.includes(id)) {
         return currentCompleted;
       }
@@ -145,13 +108,10 @@ export const FitLogProvider = ({
         plan,
         saved,
         completed,
-
         addToPlan,
         removeFromPlan,
-
         saveForLater,
         removeFromSaved,
-
         markCompleted,
       }}
     >
@@ -160,14 +120,11 @@ export const FitLogProvider = ({
   );
 };
 
-// Custom hook
 export const useFitLog = () => {
   const context = useContext(FitLogContext);
 
   if (!context) {
-    throw new Error(
-      "useFitLog must be used inside FitLogProvider"
-    );
+    throw new Error("useFitLog must be used inside FitLogProvider");
   }
 
   return context;

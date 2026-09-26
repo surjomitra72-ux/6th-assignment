@@ -5,8 +5,6 @@ const Footer = () => {
   return (
     <footer className="border-t border-gray-800 bg-[#08090b]">
       <div className="mx-auto flex min-h-[70px] max-w-7xl items-center justify-between px-6">
-
-        {/* Logo */}
         <div className="flex h-8 w-24 items-center gap-4">
           <Image
             src={logo1}
@@ -16,15 +14,13 @@ const Footer = () => {
             className="h-7 w-auto object-contain"
           />
           <span className="text-2xl font-extrabold">
-              FIT<span className="text-lime-400">LOG</span>
-            </span>
+            FIT<span className="text-lime-400">LOG</span>
+          </span>
         </div>
 
-        {/* Copyright */}
         <p className="text-[10px] text-gray-600">
           © 2026 FitLog — Workout Library. Train hard, log honest.
         </p>
-
       </div>
     </footer>
   );

@@ -40,13 +40,10 @@ export default function RootLayout({
         <FitLogProvider>
           <Navbar />
 
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1">{children}</main>
 
           <Footer />
 
-          {/* React Toastify */}
           <ToastContainer
             position="top-right"
             autoClose={2000}

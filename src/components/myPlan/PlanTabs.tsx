@@ -29,23 +29,23 @@ const PlanTabs = ({
     completed,
   } = useFitLog();
 
-  // Default sorting
+  
   const [sortOption, setSortOption] =
     useState<SortOption>("duration");
 
-  // Current active list
+ 
   const currentWorkouts =
     activeTab === "plan" ? plan : saved;
 
-  // Sort current list
+ 
   const sortedWorkouts = useMemo(() => {
     return [...currentWorkouts].sort((a, b) => {
-      // Duration: low → high
+     
       if (sortOption === "duration") {
         return Number(a.duration) - Number(b.duration);
       }
 
-      // Calories: high → low
+     
       if (sortOption === "calories") {
         return (
           Number(b.caloriesBurned || 0) -
@@ -53,7 +53,7 @@ const PlanTabs = ({
         );
       }
 
-      // Rating: high → low
+     
       if (sortOption === "rating") {
         return Number(b.rating) - Number(a.rating);
       }
@@ -62,7 +62,7 @@ const PlanTabs = ({
     });
   }, [currentWorkouts, sortOption]);
 
-  // Remove workout from Today's Plan
+  
   const handleRemoveFromPlan = (id: number) => {
     removeFromPlan(id);
 
@@ -71,7 +71,7 @@ const PlanTabs = ({
     );
   };
 
-  // Remove workout from Saved
+  
   const handleRemoveFromSaved = (id: number) => {
     removeFromSaved(id);
 
@@ -82,11 +82,11 @@ const PlanTabs = ({
 
   return (
     <div className="mt-6">
-      {/* Tabs + Sort */}
+     
       <div className="flex flex-col gap-4 border-b border-gray-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
-        {/* Tabs */}
+        
         <div className="flex w-fit rounded-lg bg-[#17191e] p-1">
-          {/* Today's Plan */}
+          
           <button
             type="button"
             onClick={() => setActiveTab("plan")}
@@ -99,7 +99,7 @@ const PlanTabs = ({
             Today's Plan
           </button>
 
-          {/* Saved */}
+          
           <button
             type="button"
             onClick={() => setActiveTab("saved")}
@@ -113,7 +113,7 @@ const PlanTabs = ({
           </button>
         </div>
 
-        {/* Sort By */}
+       
         <div className="flex items-center gap-3">
           <label
             htmlFor="sort-workouts"
@@ -146,7 +146,7 @@ const PlanTabs = ({
               </option>
             </select>
 
-            {/* Chevron */}
+           
             <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500">
               ▼
             </span>
@@ -154,7 +154,7 @@ const PlanTabs = ({
         </div>
       </div>
 
-      {/* Today's Plan */}
+     
       {activeTab === "plan" && (
         <div className="mt-4 space-y-3">
           {sortedWorkouts.length === 0 ? (
@@ -176,7 +176,7 @@ const PlanTabs = ({
         </div>
       )}
 
-      {/* Saved */}
+
       {activeTab === "saved" && (
         <div className="mt-4 space-y-3">
           {sortedWorkouts.length === 0 ? (

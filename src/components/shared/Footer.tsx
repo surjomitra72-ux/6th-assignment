@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-gray-800 bg-[#08090b]">
       <div className="mx-auto flex min-h-[70px] max-w-7xl items-center justify-between px-6">
-        <div className="flex h-8 w-24 items-center gap-4">
+        <div className="flex items-center gap-3">
           <Image
             src={logo1}
             alt="FitLog Logo"
@@ -13,7 +13,8 @@ const Footer = () => {
             height={25}
             className="h-7 w-auto object-contain"
           />
-          <span className="text-2xl font-extrabold">
+
+          <span className="text-2xl font-extrabold text-white">
             FIT<span className="text-lime-400">LOG</span>
           </span>
         </div>

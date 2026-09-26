@@ -11,13 +11,13 @@ const Footer = () => {
           <Image
             src={logo1}
             alt="FitLog Logo"
-            width={60}
-            height={28}
+            width={55}
+            height={25}
             className="h-7 w-auto object-contain"
           />
-          <span className="text-xs font-bold tracking-wide text-white">
-            FITLOG
-          </span>
+          <span className="text-2xl font-extrabold">
+              FIT<span className="text-lime-400">LOG</span>
+            </span>
         </div>
 
         {/* Copyright */}

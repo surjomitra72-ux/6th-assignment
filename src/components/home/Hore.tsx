@@ -18,22 +18,24 @@ const Hero = () => {
           transition={{ duration: 0.7 }}
           className="w-full text-center md:w-1/2 md:text-left"
         >
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300 sm:text-sm">
-            Train Smarter
-          </p>
+                {/* Small Label */}
+            <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.15em] text-[#ccff00] sm:text-[10px]">
+              Workout Library
+            </p>
 
-          <h1 className="text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-            Build Your
-            <br />
-            <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-              Stronger Self
-            </span>
-          </h1>
+            {/* Heading */}
+            <h1 className="max-w-2xl text-4xl font-black uppercase leading-[0.9] tracking-tight text-white sm:text-5xl md:text-[3.5rem] lg:text-[4rem]">
+              Train With Intent.
+              <br />
+              Log Every Set.
+            </h1>
 
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-gray-300 sm:text-base md:mx-0 md:leading-7">
-            Explore effective workouts, build your personal plan, and track
-            your fitness journey with FitLog.
-          </p>
+            {/* Description */}
+            <p className="mt-4 max-w-lg text-xs leading-5 text-gray-500 sm:text-sm sm:leading-6">
+              FitLog is a dark, no-nonsense gym companion: pick a lift,
+              lock it into today&apos;s plan, and watch the week&apos;s work
+              add up.
+            </p>
 
           {/* Buttons */}
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
@@ -41,15 +43,9 @@ const Hero = () => {
               href="#library"
               className="rounded-lg bg-lime-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-lime-300"
             >
-              Explore Workouts
+               Browse Workouts
             </Link>
 
-            <Link
-              href="/my-plan"
-              className="rounded-lg border border-gray-600 px-6 py-3 text-sm font-bold text-white transition hover:border-lime-400 hover:text-lime-400"
-            >
-              My Plan
-            </Link>
           </div>
         </motion.div>
 

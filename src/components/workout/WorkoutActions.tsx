@@ -1,7 +1,8 @@
+
 "use client";
 
 import { useFitLog } from "@/context/FitLogContext";
-import type { IWorkout } from "@/types/workout-type";
+import { IWorkout } from "@/types/workout-type";
 import { toast } from "react-toastify";
 
 interface WorkoutActionsProps {
@@ -13,66 +14,76 @@ const WorkoutActions = ({ workout }: WorkoutActionsProps) => {
     plan,
     saved,
     addToPlan,
+    removeFromPlan,
     saveForLater,
+    removeFromSaved,
   } = useFitLog();
 
-  const isInPlan = plan.some(
-    (item) => item.id === workout.id
-  );
+  const isInPlan = plan.some((item) => item.id === workout.id);
+  const isSaved = saved.some((item) => item.id === workout.id);
 
-  const isSaved = saved.some(
-    (item) => item.id === workout.id
-  );
-
-  const handleAddToPlan = () => {
+  // Add / Remove Plan
+  const handlePlan = () => {
     if (isInPlan) {
-      toast.info("Already added to today's plan");
+      removeFromPlan(workout.id);
+
+      toast.success(`${workout.name} removed from today's plan`);
+
       return;
     }
 
     if (plan.length >= 5) {
-      toast.warning("You can add maximum 5 workouts");
+      toast.error("You can add maximum 5 workouts to today's plan.");
+
       return;
     }
 
     addToPlan(workout);
 
-    toast.success(
-      `${workout.name} added to today's plan`
-    );
+    toast.success(`${workout.name} added to today's plan`);
   };
 
+  // Save / Remove Saved
   const handleSave = () => {
     if (isSaved) {
-      toast.info("Already saved");
+      removeFromSaved(workout.id);
+
+      toast.success(`${workout.name} removed from saved`);
+
       return;
     }
 
     saveForLater(workout);
 
-    toast.success(
-      `${workout.name} saved for later`
-    );
+    toast.success(`${workout.name} saved for later`);
   };
 
   return (
     <div className="flex flex-wrap gap-3">
+      {/* Add to Plan */}
       <button
         type="button"
-        onClick={handleAddToPlan}
-        disabled={isInPlan}
-        className="rounded-lg bg-[#ccff00] px-5 py-3 font-semibold text-black transition hover:bg-[#b8eb00] disabled:cursor-not-allowed disabled:opacity-50"
+        onClick={handlePlan}
+        className={`rounded-lg px-5 py-3 text-sm font-bold transition ${
+          isInPlan
+            ? "border border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
+            : "bg-[#ccff00] text-black hover:bg-[#b8e600]"
+        }`}
       >
-        {isInPlan ? "✓ Added to Plan" : "+ Add to Plan"}
+        {isInPlan ? "✓ In Today's Plan" : "+ Add to Today's Plan"}
       </button>
 
+      {/* Save */}
       <button
         type="button"
         onClick={handleSave}
-        disabled={isSaved}
-        className="rounded-lg border border-gray-700 px-5 py-3 font-semibold text-white transition hover:border-[#ccff00] hover:text-[#ccff00] disabled:cursor-not-allowed disabled:opacity-50"
+        className={`rounded-lg border px-5 py-3 text-sm font-bold transition ${
+          isSaved
+            ? "border-[#ccff00] text-[#ccff00]"
+            : "border-gray-700 text-gray-300 hover:border-[#ccff00] hover:text-[#ccff00]"
+        }`}
       >
-        {isSaved ? "✓ Saved" : "♡ Save for Later"}
+        {isSaved ? "♥ Saved" : "♡ Save for Later"}
       </button>
     </div>
   );

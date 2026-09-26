@@ -1,6 +1,8 @@
+
 "use client";
 
 import { useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 import { useFitLog } from "@/context/FitLogContext";
 
@@ -60,6 +62,24 @@ const PlanTabs = ({
     });
   }, [currentWorkouts, sortOption]);
 
+  // Remove workout from Today's Plan
+  const handleRemoveFromPlan = (id: number) => {
+    removeFromPlan(id);
+
+    toast.success(
+      "Workout removed from today's plan"
+    );
+  };
+
+  // Remove workout from Saved
+  const handleRemoveFromSaved = (id: number) => {
+    removeFromSaved(id);
+
+    toast.success(
+      "Workout removed from saved"
+    );
+  };
+
   return (
     <div className="mt-6">
       {/* Tabs + Sort */}
@@ -76,7 +96,7 @@ const PlanTabs = ({
                 : "text-gray-500 hover:text-white"
             }`}
           >
-            Today's Plan 
+            Today's Plan
           </button>
 
           {/* Saved */}
@@ -89,7 +109,7 @@ const PlanTabs = ({
                 : "text-gray-500 hover:text-white"
             }`}
           >
-            Saved 
+            Saved
           </button>
         </div>
 
@@ -144,7 +164,7 @@ const PlanTabs = ({
               <PlannedWorkoutCard
                 key={workout.id}
                 workout={workout}
-                onRemove={removeFromPlan}
+                onRemove={handleRemoveFromPlan}
                 onMarkDone={markCompleted}
                 isCompleted={completed.includes(
                   workout.id
@@ -166,7 +186,7 @@ const PlanTabs = ({
               <PlannedWorkoutCard
                 key={workout.id}
                 workout={workout}
-                onRemove={removeFromSaved}
+                onRemove={handleRemoveFromSaved}
                 showMarkDone={false}
               />
             ))
@@ -178,3 +198,4 @@ const PlanTabs = ({
 };
 
 export default PlanTabs;
+

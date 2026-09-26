@@ -182,7 +182,7 @@ src/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/fitlog.git
+git https://github.com/surjomitra72-ux/6th-assignment
 ```
 
 ### 2. Go to the project directory
